@@ -1,5 +1,5 @@
 import sonarjs from 'eslint-plugin-sonarjs';
-import tseslint from 'typescript-eslint';
+import tseslint, { type ConfigArray } from 'typescript-eslint';
 import eslint from '@eslint/js';
 import { styleRules } from './lib/ruleset/eslint.rules.js';
 import { nxRules } from './lib/ruleset/nx.rules.js';
@@ -7,7 +7,7 @@ import { nxRules } from './lib/ruleset/nx.rules.js';
 export { styleRules } from './lib/ruleset/eslint.rules.js';
 export { nxRules } from './lib/ruleset/nx.rules.js';
 
-export const monostylePresetTs: tseslint.ConfigArray = [
+export const monostylePresetTs: ConfigArray = [
   eslint.configs.recommended,
   ...tseslint.configs.recommended,
   sonarjs.configs.recommended,
@@ -17,7 +17,7 @@ export const monostylePresetTs: tseslint.ConfigArray = [
   ...styleRules,
 ];
 
-export const monostylePresetNxTs: tseslint.ConfigArray = [
+export const monostylePresetNxTs: ConfigArray = [
   ...monostylePresetTs,
   ...nxRules,
 ];

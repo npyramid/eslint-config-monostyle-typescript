@@ -1,10 +1,5 @@
 import type { Rule } from 'eslint';
 import {
-  type TSourceCode,
-  type TLocatable,
-  type TRuleNode,
-} from '../types/index.type.ts';
-import {
   getBoundaryTokens,
   getBoundaryNewlineNeeds,
   hasAdjacentMembersOnSameLine,
@@ -27,38 +22,45 @@ export const objectPatternNewlineRule: Rule.RuleModule = {
       },
     ],
     messages: {
-      multiline: 'For object patterns with {{min}}+ members, use multiline braces and' +
-        ' one member per line.',
+      multiline:
+        'For object patterns with {{min}}+ members, use multiline braces and ' +
+        'one member per line.',
     },
   },
 
   create(context) {
-    const sourceCode = context.sourceCode as unknown as TSourceCode;
+    const { sourceCode } = context;
 
     if (!sourceCode) {
       return {};
     }
 
-    const options = (context.options?.[0] ?? {}) as {
-      minProperties?: number; indent?: number;
-    };
-    const minProperties = options.minProperties ?? 4;
-    const indentSize = options.indent ?? 2;
-
-    type TProperty = TLocatable & {
-      type?: string;
-    };
+    const rawOptions: unknown = context.options[0];
+    const rawMinProperties = (
+      typeof rawOptions === 'object' && rawOptions !== null && 'minProperties' in rawOptions
+    ) ?
+      rawOptions.minProperties :
+      undefined;
+    const rawIndent = (
+      typeof rawOptions === 'object' && rawOptions !== null && 'indent' in rawOptions
+    ) ?
+      rawOptions.indent :
+      undefined;
+    const minProperties = typeof rawMinProperties === 'number' ? rawMinProperties : 4;
+    const indentSize = typeof rawIndent === 'number' ? rawIndent : 2;
 
     function check(node: Rule.Node): void {
-      const properties = ((node as {
-        properties?: TProperty[];
-      }).properties ?? []);
+      if (!('properties' in node) || !Array.isArray(node.properties)) {
+        return;
+      }
+
+      const { properties } = node;
 
       if (properties.length < minProperties) {
         return;
       }
 
-      const boundaries = getBoundaryTokens(sourceCode, node as TRuleNode, {
+      const boundaries = getBoundaryTokens(sourceCode, node, {
         left: '{',
         right: '}',
       });
@@ -93,12 +95,12 @@ export const objectPatternNewlineRule: Rule.RuleModule = {
           fixer => {
             const { baseIndent, innerIndent } = getNodeIndentation(
               sourceCode,
-              node as TRuleNode,
+              node,
               indentSize,
             );
 
             const memberText = properties
-              .map(property => sourceCode.getText(property as never))
+              .map(property => sourceCode.getText(property))
               .join(`,\n${innerIndent}`);
 
             const last = properties.at(-1);

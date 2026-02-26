@@ -1,10 +1,5 @@
 import type { Rule } from 'eslint';
 import {
-  type TSourceCode,
-  type TLocatable,
-  type TRuleNode,
-} from '../types/index.type.ts';
-import {
   getBoundaryTokens,
   getBoundaryNewlineNeeds,
   hasAdjacentMembersOnSameLine,
@@ -27,36 +22,43 @@ export const namedSpecifiersNewlineRule: Rule.RuleModule = {
       },
     ],
     messages: {
-      multiline: 'For {{kind}} with {{min}}+ specifiers, use multiline braces and' +
-        ' one specifier per line.',
+      multiline:
+        'For {{kind}} with {{min}}+ specifiers, use multiline braces and ' +
+        'one specifier per line.',
     },
   },
 
   create(context) {
-    const sourceCode = context.sourceCode as unknown as TSourceCode;
+    const { sourceCode } = context;
 
     if (!sourceCode) {
       return {};
     }
 
-    const options = (context.options?.[0] ?? {}) as {
-      minSpecifiers?: number; indent?: number;
-    };
-    const minSpecifiers = options.minSpecifiers ?? 4;
-    const indentSize = options.indent ?? 2;
-
-    type TSpecifier = TLocatable & {
-      type?: string;
-    };
+    const rawOptions: unknown = context.options[0];
+    const rawMinSpecifiers = (
+      typeof rawOptions === 'object' && rawOptions !== null && 'minSpecifiers' in rawOptions
+    ) ?
+      rawOptions.minSpecifiers :
+      undefined;
+    const rawIndent = (
+      typeof rawOptions === 'object' && rawOptions !== null && 'indent' in rawOptions
+    ) ?
+      rawOptions.indent :
+      undefined;
+    const minSpecifiers = typeof rawMinSpecifiers === 'number' ? rawMinSpecifiers : 4;
+    const indentSize = typeof rawIndent === 'number' ? rawIndent : 2;
 
     function check(
       node: Rule.Node,
       specifierType: string,
       kind: 'import' | 'export',
     ): void {
-      const specifiers = ((node as {
-        specifiers?: TSpecifier[];
-      }).specifiers ?? []).filter(
+      if (!('specifiers' in node) || !Array.isArray(node.specifiers)) {
+        return;
+      }
+
+      const specifiers = node.specifiers.filter(
         specifier => specifier?.type === specifierType,
       );
 
@@ -64,7 +66,7 @@ export const namedSpecifiersNewlineRule: Rule.RuleModule = {
         return;
       }
 
-      const boundaries = getBoundaryTokens(sourceCode, node as TRuleNode, {
+      const boundaries = getBoundaryTokens(sourceCode, node, {
         left: '{',
         right: '}',
       });
@@ -99,12 +101,12 @@ export const namedSpecifiersNewlineRule: Rule.RuleModule = {
           fixer => {
             const { baseIndent, innerIndent } = getNodeIndentation(
               sourceCode,
-              node as TRuleNode,
+              node,
               indentSize,
             );
 
             const specText = specifiers
-              .map(specifier => sourceCode.getText(specifier as never))
+              .map(specifier => sourceCode.getText(specifier))
               .join(`,\n${innerIndent}`);
 
             const replacement = `\n${innerIndent}${specText}\n${baseIndent}`;
