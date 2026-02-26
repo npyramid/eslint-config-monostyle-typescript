@@ -1,6 +1,5 @@
 import { RuleTester } from 'eslint';
-
-import { monostyleEslintPlugin } from './lib/plugin/index.ts';
+import { monostyleEslintPlugin } from './lib/plugin/index.js';
 
 declare const it: (name: string, test: () => void) => void;
 declare const expect: (value: unknown) => {

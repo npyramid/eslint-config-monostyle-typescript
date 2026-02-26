@@ -1,6 +1,8 @@
 import { type Linter } from 'eslint';
+import eslint from '@eslint/js';
 import { Xo } from 'xo';
 import stylistic from '@stylistic/eslint-plugin';
+import tseslint from 'typescript-eslint';
 import { monostyleEslintPlugin } from '../plugin/index.ts';
 import { rewriteXoStylisticRules } from '../utils/index.ts';
 import xoConfigDefault from './xo.config.ts';
@@ -28,6 +30,8 @@ const xoEslintConfigs = Xo.xoToEslintConfig(xoConfigDefault).map((configItem: Li
 });
 
 export const styleRules: Linter.Config[] = [
+  eslint.configs.recommended,
+  ...tseslint.configs.recommended,
   ...xoEslintConfigs,
   {
     files: ['**/*.ts'],
