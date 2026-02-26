@@ -1,0 +1,60 @@
+{
+  "name": "eslint-flat-monostyle",
+  "version": "0.1.0",
+  "private": false,
+  "description": "Opinionated ESLint flat-config presets and custom formatting rules for TypeScript monorepos.",
+  "license": "MIT",
+  "type": "module",
+  "types": "./dist/index.d.ts",
+  "main": "./dist/index.js",
+  "engines": {
+    "node": ">=20.17"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "clean": "rm -rf dist",
+    "build": "npm run clean && tsc -p tsconfig.build.json",
+    "test": "jest --config ./jest.config.ts",
+    "prepublishOnly": "npm run build && npm test",
+    "release": "semantic-release"
+  },
+  "keywords": [
+    "eslint",
+    "eslint-plugin",
+    "eslint-flat-config",
+    "typescript",
+    "monorepo",
+    "style"
+  ],
+  "peerDependencies": {
+    "eslint": "^9.20.0"
+  },
+  "dependencies": {
+    "@stylistic/eslint-plugin": "^5.7.0",
+    "eslint-plugin-sonarjs": "^4.0.0",
+    "xo": "^1.2.3"
+  },
+  "devDependencies": {
+    "@semantic-release/commit-analyzer": "^13.0.1",
+    "@semantic-release/github": "^12.0.6",
+    "@semantic-release/npm": "^13.1.4",
+    "@semantic-release/release-notes-generator": "^14.1.0",
+    "@swc/jest": "^0.2.39",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^22.18.0",
+    "jest": "^30.0.5",
+    "jiti": "^2.6.1",
+    "semantic-release": "^25.0.3",
+    "typescript": "^5.9.2"
+  }
+}
