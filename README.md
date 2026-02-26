@@ -28,7 +28,7 @@ pnpm add -D eslint-flat-monostyle eslint
 import { styleRules } from 'eslint-flat-monostyle';
 
 export default [
- ...styleRules,
+	...styleRules,
 ];
 ```
 
@@ -39,8 +39,8 @@ export default [
 import { nxRules, styleRules } from 'eslint-flat-monostyle';
 
 export default [
- ...nxRules,
- ...styleRules,
+	...nxRules,
+	...styleRules,
 ];
 ```
 
@@ -60,23 +60,12 @@ npm test
 npm run build
 ```
 
-## Releases
+## Publish checklist
 
-Publishing is automated via GitHub Actions and `semantic-release`.
-
-- version is incremented automatically from Conventional Commits
-- release notes are published to GitHub Releases
-- npm package is published from CI on pushes to `main`
-
-Required GitHub repository secret:
-
-- `NPM_TOKEN` — npm automation token with publish access to this package
-
-Commit format must follow Conventional Commits, for example:
-
-- `feat: add new preset`
-- `fix: handle multiline specifiers`
-- `chore: update dependencies`
+- bump version in `package.json`
+- run `npm test`
+- run `npm run build`
+- publish with `npm publish --access public`
 
 ## License
 

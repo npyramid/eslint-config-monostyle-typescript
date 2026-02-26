@@ -9,7 +9,6 @@
     "outDir": "./dist"
   },
   "exclude": [
-    "src/**/*.spec.ts",
-    "./eslint.config.ts"
-  ],
+    "src/**/*.spec.ts"
+  ]
 }
