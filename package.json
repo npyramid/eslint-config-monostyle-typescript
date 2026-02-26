@@ -1,5 +1,5 @@
 {
-  "name": "eslint-flat-monostyle",
+  "name": "eslint-config-monostyle-typescript",
   "version": "0.1.0",
   "private": false,
   "description": "Opinionated ESLint flat-config presets and custom formatting rules for TypeScript monorepos.",
@@ -32,15 +32,24 @@
     "eslint-plugin",
     "eslint-flat-config",
     "typescript",
-    "monorepo",
     "style"
   ],
+  "peerDependencies": {
+    "eslint": "^9.0.0"
+  },
   "dependencies": {
-    "@eslint/js": "^10.0.1",
-    "@stylistic/eslint-plugin": "^5.7.0",
-    "eslint": "^10.0.2",
+    "@eslint-community/eslint-plugin-eslint-comments": "^4.6.0",
+    "@eslint/js": "^9.39.3",
+    "@stylistic/eslint-plugin": "^5.9.0",
+    "eslint-config-xo-typescript": "^9.0.0",
+    "eslint-plugin-import-x": "^4.16.1",
+    "eslint-plugin-n": "^17.24.0",
+    "eslint-plugin-no-use-extend-native": "^0.7.2",
+    "eslint-plugin-promise": "^7.2.1",
     "eslint-plugin-sonarjs": "^4.0.0",
-    "typescript-eslint": "^8.52.0",
+    "eslint-plugin-unicorn": "^63.0.0",
+    "globals": "^17.3.0",
+    "typescript-eslint": "^8.56.1",
     "xo": "^1.2.3"
   },
   "devDependencies": {
@@ -52,6 +61,7 @@
     "@types/jest": "^30.0.0",
     "@types/node": "^22.18.0",
     "jest": "^30.0.5",
+    "jiti": "^2.6.1",
     "semantic-release": "^25.0.3",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.2"

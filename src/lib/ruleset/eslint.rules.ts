@@ -56,6 +56,7 @@ export const styleRules: Linter.Config[] = [
     ],
     plugins: {
       monostyle: monostyleEslintPlugin,
+      '@stylistic': stylistic,
     },
     rules: {
       'monostyle/named-specifiers-newline': [
@@ -134,8 +135,10 @@ export const styleRules: Linter.Config[] = [
           ignoreUrls: true,
           ignoreRegExpLiterals: true,
           ignorePattern: '^import.*$',
+          ignoreComments: true,
         },
       ],
+      '@stylistic/indent': ['error', 2, { SwitchCase: 1 }],
       'no-restricted-syntax': [
         'error',
         'ForStatement',

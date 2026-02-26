@@ -9,6 +9,9 @@
     "forceConsistentCasingInFileNames": true,
     "rootDir": ".",
     "noEmit": false,
+    "lib": [
+      "ESNext"
+    ],
     "types": [
       "node",
       "jest"
