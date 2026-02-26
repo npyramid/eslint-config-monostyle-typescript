@@ -3,7 +3,7 @@ name: Release
 on:
   push:
     branches:
-      - main
+      - master
 
 permissions:
   contents: write
@@ -29,7 +29,7 @@ jobs:
           registry-url: https://registry.npmjs.org
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci && npm i semantic-release @semantic-release/changelog @semantic-release/git @semantic-release/github @semantic-release/npm
 
       - name: Build
         run: npm run build
