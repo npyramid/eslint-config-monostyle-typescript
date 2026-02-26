@@ -1,6 +1,5 @@
 import sonarjs from 'eslint-plugin-sonarjs';
 import tseslint, { type ConfigArray } from 'typescript-eslint';
-import eslint from '@eslint/js';
 import { lintingRules } from './lib/ruleset/eslint.rules.js';
 import { nxRules } from './lib/ruleset/nx.rules.js';
 
@@ -9,8 +8,7 @@ export { nxRules } from './lib/ruleset/nx.rules.js';
 export { stylisticRules } from './lib/ruleset/stylistic.rules.js';
 
 export const monostylePresetTs: ConfigArray = [
-  eslint.configs.recommended,
-  ...tseslint.configs.recommended,
+  ...tseslint.configs.stylistic,
   sonarjs.configs.recommended,
   {
     ignores: ['dist/**', 'node_modules/**'],
