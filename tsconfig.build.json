@@ -6,9 +6,15 @@
     "declaration": true,
     "declarationMap": false,
     "sourceMap": false,
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "rootDir": "./src"
   },
   "exclude": [
-    "src/**/*.spec.ts"
+    "src/**/*.spec.ts",
+    "./eslint.config.ts",
+    "./jest.config.ts",
+  ],
+  "include": [
+    "src/**/*.ts"
   ]
 }

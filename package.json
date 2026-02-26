@@ -19,6 +19,9 @@
     "LICENSE"
   ],
   "scripts": {
+    "lint": "eslint .",
+    "lint:report": "npm run lint",
+    "lint:fix": "npm run lint -- --fix",
     "clean": "rm -rf dist",
     "build": "npm run clean && tsc -p tsconfig.build.json",
     "test": "jest --config ./jest.config.ts",

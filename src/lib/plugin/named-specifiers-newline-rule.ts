@@ -1,5 +1,4 @@
 import type { Rule } from 'eslint';
-
 import {
   type TSourceCode,
   type TLocatable,

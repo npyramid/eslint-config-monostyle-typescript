@@ -1,5 +1,4 @@
 import type { Rule } from 'eslint';
-
 import type { TSourceCode, TRuleNode } from '../types/index.type.ts';
 import {
   getBoundaryTokens,

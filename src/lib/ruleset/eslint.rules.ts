@@ -1,9 +1,9 @@
-import { Linter } from "eslint";
+import { type Linter } from 'eslint';
 import { Xo } from 'xo';
 import stylistic from '@stylistic/eslint-plugin';
+import { monostyleEslintPlugin } from '../plugin/index.ts';
+import { rewriteXoStylisticRules } from '../utils/index.ts';
 import xoConfigDefault from './xo.config.ts';
-import { monostyleEslintPlugin } from "../plugin/index.ts";
-import { rewriteXoStylisticRules } from "../utils/index.ts";
 
 const xoEslintConfigs = Xo.xoToEslintConfig(xoConfigDefault).map((configItem: Linter.Config) => {
   if (configItem?.plugins?.['@stylistic']) {
