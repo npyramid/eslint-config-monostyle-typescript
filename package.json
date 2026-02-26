@@ -38,6 +38,7 @@
   "dependencies": {
     "@stylistic/eslint-plugin": "^5.7.0",
     "eslint-plugin-sonarjs": "^4.0.0",
+    "typescript-eslint": "^8.56.1",
     "xo": "^1.2.3"
   },
   "devDependencies": {

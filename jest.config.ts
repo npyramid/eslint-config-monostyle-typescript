@@ -1,13 +1,16 @@
 import { readFileSync } from 'node:fs';
 import { join as joinPath } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { type Config } from 'jest';
+
+const dirname = fileURLToPath(new URL('.', import.meta.url));
 
 type TSwcJestConfig = Record<string, unknown> & {
   swcrc?: boolean;
 };
 
-const loadSwcJestConfig = ():TSwcJestConfig => {
-  const pathToFile = joinPath(process.cwd(), '.spec.swcrc');
+const loadSwcJestConfig = (): TSwcJestConfig => {
+  const pathToFile = joinPath(dirname, '.spec.swcrc');
   const value = readFileSync(pathToFile, 'utf8');
 
   return {
