@@ -1,1 +1,1 @@
-export { monostylePresetTs } from './src/index.js';
+export { monostylePresetTs as default } from './src/index.js';

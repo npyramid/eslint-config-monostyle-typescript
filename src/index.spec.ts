@@ -1,6 +1,5 @@
 import { RuleTester } from 'eslint';
-
-import { monostyleEslintPlugin } from './lib/plugin/index.ts';
+import { monostyleEslintPlugin } from './lib/plugin/index.js';
 
 declare const it: (name: string, test: () => void) => void;
 declare const expect: (value: unknown) => {
@@ -153,6 +152,53 @@ ruleTester.run(
         code: 'const {\n  a, b,\n  // keep\n  c,\n  d,\n} = source;',
         output: null,
         errors: [{ messageId: 'multiline' }],
+      },
+    ],
+  },
+);
+
+ruleTester.run(
+  'todo-task-reference',
+  monostyleEslintPlugin.rules['todo-task-reference'],
+  {
+    valid: [
+      {
+        code: '// TODO: sync with backend in https://tracker.local/browse/XXX-1444\nconst value = 1;',
+        options: [{ projectSlug: 'XXX' }],
+      },
+      {
+        code: '// WARNING: details in https://tracker.local/issues/4444\nconst value = 1;',
+        options: [{ urlPattern: 'issues/' }],
+      },
+      {
+        code: '/* FIXME: task in https://tracker.local/task/999 */\nconst value = 1;',
+        options: [{ regexp: String.raw`task/\d+` }],
+      },
+      {
+        code: '// NOTE: this comment is not tracked\nconst value = 1;',
+        options: [{ projectSlug: 'XXX' }],
+      },
+    ],
+    invalid: [
+      {
+        code: '// TODO: refactor\nconst value = 1;',
+        options: [{ projectSlug: 'XXX' }],
+        errors: [{ messageId: 'missingTaskReference' }],
+      },
+      {
+        code: '// TODO: sync with backend in XXX-1444\nconst value = 1;',
+        options: [{ projectSlug: 'XXX' }],
+        errors: [{ messageId: 'missingTaskReference' }],
+      },
+      {
+        code: '// WARNING: still pending\nconst value = 1;',
+        options: [{ urlPattern: 'issues/' }],
+        errors: [{ messageId: 'missingTaskReference' }],
+      },
+      {
+        code: '/* FIXME: task in tracker.local/task/999 */\nconst value = 1;',
+        options: [{ regexp: String.raw`task/\d+` }],
+        errors: [{ messageId: 'missingTaskReference' }],
       },
     ],
   },

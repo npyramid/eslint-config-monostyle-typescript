@@ -1,46 +1,57 @@
-# eslint-flat-monostyle
+# eslint-config-monostyle-typescript
 
 Opinionated ESLint flat-config presets and custom style rules for TypeScript monorepos.
 
 ## Features
 
-- Flat config presets ready to spread into `eslint.config.*`
-- Custom plugin rules for multiline imports/exports and bracket formatting
-- Prebuilt `styleRules` preset and optional `nxRules` preset
+- Including best practices from xo linter and SonarJS plugin
+- Added and isolated `@stylistic` rules via `stylisticRules`
+- Prebuilt `monostylePresetTs` and optional `monostylePresetNxTs`
+- Low-level exports: `lintingRules`, `nxRules`, `stylisticRules`
 - ESM package with TypeScript declarations
 
 ## Install
 
 ```bash
-npm i -D eslint-flat-monostyle eslint
+npm i -D eslint-config-monostyle-typescript eslint
 ```
 
 or
 
 ```bash
-pnpm add -D eslint-flat-monostyle eslint
+pnpm add -D eslint-config-monostyle-typescript eslint
 ```
 
 ## Quick start
 
 ```ts
 // eslint.config.ts
-import { styleRules } from 'eslint-flat-monostyle';
+import { monostylePresetTs } from 'eslint-config-monostyle-typescript';
 
-export default [
-	...styleRules,
-];
+export default monostylePresetTs;
 ```
 
 ## Nx-oriented setup
 
 ```ts
 // eslint.config.ts
-import { nxRules, styleRules } from 'eslint-flat-monostyle';
+import { monostylePresetNxTs } from 'eslint-config-monostyle-typescript';
+
+export default monostylePresetNxTs;
+```
+
+## Fine-grained setup
+
+```ts
+// eslint.config.ts
+import {
+ lintingRules,
+ nxRules,
+} from 'eslint-config-monostyle-typescript';
 
 export default [
-	...nxRules,
-	...styleRules,
+ ...lintingRules,
+ ...nxRules,
 ];
 ```
 
@@ -49,8 +60,22 @@ export default [
 - `monostyle/named-specifiers-newline`
 - `monostyle/multiline-array-brackets`
 - `monostyle/object-pattern-newline`
+- `monostyle/todo-task-reference`
 
-These rules are already enabled by `styleRules`.
+### `monostyle/todo-task-reference`
+
+Checks `TODO` / `FIXME` / `WARNING` / `WARN` / `BUG` / `HACK` / `XXX` comments.
+Such comments are invalid if they do not contain a task reference.
+
+Configuration accepts one (or several) of:
+
+- `projectSlug` — validates protocol URL with ticket keys like `https://tracker/browse/XXX-1444`
+- `urlPattern` — validates protocol URL contains the given fragment (for example `issues/`)
+- `regexp` — custom regular expression string matched against protocol URLs
+
+For all options, protocol is mandatory (`https://...`, `http://...`, etc.).
+
+These rules are already enabled by `lintingRules`, `monostylePresetTs`, and `monostylePresetNxTs`.
 
 ## Development
 

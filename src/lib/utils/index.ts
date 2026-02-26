@@ -1,14 +1,31 @@
-import { type Linter } from 'eslint';
+import { type Rule, type Linter } from 'eslint';
 import {
   type TSourceCode,
-  type TRuleNode,
   type TLocatable,
   type TToken,
 } from '../types/index.type.ts';
 
+type TTokenWithLocAndRange = TToken & {
+  loc: {
+    start: {
+      line: number;
+    };
+    end: {
+      line: number;
+    };
+  };
+  range: [number, number];
+};
+
+const hasTokenLocAndRange = (token: TToken): token is TTokenWithLocAndRange => (
+  Boolean(token.loc) &&
+  Array.isArray(token.range) &&
+  token.range.length === 2
+);
+
 export function getNodeIndentation(
   sourceCode: TSourceCode,
-  node: TRuleNode,
+  node: Rule.Node,
   indentSize: number,
 ): {
   baseIndent: string;
@@ -39,18 +56,22 @@ export function hasAdjacentMembersOnSameLine(items: TLocatable[]): boolean {
 
 export function getBoundaryTokens(
   sourceCode: TSourceCode,
-  node: TRuleNode,
+  node: Rule.Node,
   boundaries: {
     left: string;
     right: string;
   },
 ): {
-  leftToken: TToken;
-  rightToken: TToken;
+  leftToken: TTokenWithLocAndRange;
+  rightToken: TTokenWithLocAndRange;
 } | undefined {
-  const tokens = sourceCode.getTokens(node as never, { includeComments: false });
-  const leftToken = tokens.find(token => token.value === boundaries.left);
-  const rightToken = [...tokens].reverse().find(token => token.value === boundaries.right);
+  const tokens = sourceCode.getTokens(node, { includeComments: false });
+  const leftToken = tokens.find(
+    token => token.value === boundaries.left && hasTokenLocAndRange(token),
+  );
+  const rightToken = [...tokens]
+    .toReversed()
+    .find(token => token.value === boundaries.right && hasTokenLocAndRange(token));
 
   if (!leftToken || !rightToken) {
     return undefined;
@@ -61,17 +82,17 @@ export function getBoundaryTokens(
 
 export function getBoundaryNewlineNeeds(
   sourceCode: TSourceCode,
-  leftToken: TToken,
-  rightToken: TToken,
+  leftToken: TTokenWithLocAndRange,
+  rightToken: TTokenWithLocAndRange,
 ): {
   needsAfter: boolean;
   needsBefore: boolean;
 } | undefined {
   const nextToken = sourceCode.getTokenAfter(
-    leftToken as never,
+    leftToken,
     { includeComments: false },
   );
-  const previousToken = sourceCode.getTokenBefore(rightToken as never, {
+  const previousToken = sourceCode.getTokenBefore(rightToken, {
     includeComments: false,
   });
 
@@ -91,7 +112,7 @@ export function hasCommentsInsideRange(
   rightToken: TToken,
 ): boolean {
   return sourceCode
-    .getTokensBetween(leftToken as never, rightToken as never, { includeComments: true })
+    .getTokensBetween(leftToken, rightToken, { includeComments: true })
     .some(token => token.type === 'Line' || token.type === 'Block');
 }
 

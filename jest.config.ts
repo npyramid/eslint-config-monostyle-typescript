@@ -1,22 +1,32 @@
 import { readFileSync } from 'node:fs';
 import { join as joinPath } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import process from 'node:process';
 import { type Config } from 'jest';
 
-const dirname = fileURLToPath(new URL('.', import.meta.url));
+const dirname = process.cwd();
 
 type TSwcJestConfig = Record<string, unknown> & {
   swcrc?: boolean;
 };
 
+const isRecord = (value: unknown): value is Record<string, unknown> => (
+  typeof value === 'object' && value !== null
+);
+
 const loadSwcJestConfig = (): TSwcJestConfig => {
   const pathToFile = joinPath(dirname, '.spec.swcrc');
   const value = readFileSync(pathToFile, 'utf8');
+  const parsedConfig: unknown = JSON.parse(value);
 
-  return {
-    ...(JSON.parse(value) as TSwcJestConfig),
-    swcrc: false,
-  };
+  const config: TSwcJestConfig = { swcrc: false };
+
+  if (isRecord(parsedConfig)) {
+    for (const [key, parsedValue] of Object.entries(parsedConfig)) {
+      config[key] = parsedValue;
+    }
+  }
+
+  return config;
 };
 
 const config = {

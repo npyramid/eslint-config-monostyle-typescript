@@ -2,7 +2,6 @@ name: CI
 
 on:
   pull_request:
-  push:
     branches:
       - master
 
@@ -22,7 +21,10 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --include=dev
+
+      - name: Lint
+        run: npm run lint:report
 
       - name: Build
         run: npm run build

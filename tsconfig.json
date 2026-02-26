@@ -7,8 +7,11 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "rootDir": "./src",
+    "rootDir": ".",
     "noEmit": false,
+    "lib": [
+      "ESNext"
+    ],
     "types": [
       "node",
       "jest"
@@ -17,6 +20,6 @@
     "rewriteRelativeImportExtensions": true
   },
   "include": [
-    "src/**/*.ts"
+    "**/*.ts"
   ]
 }

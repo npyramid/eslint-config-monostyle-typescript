@@ -1,6 +1,4 @@
 import type { Rule } from 'eslint';
-
-import type { TSourceCode, TRuleNode } from '../types/index.type.ts';
 import {
   getBoundaryTokens,
   getBoundaryNewlineNeeds,
@@ -27,23 +25,26 @@ export const multilineArrayBracketsRule: Rule.RuleModule = {
   },
 
   create(context) {
-    const sourceCode = context.sourceCode as TSourceCode;
+    const { sourceCode } = context;
 
     if (!sourceCode) {
       return {};
     }
 
-    const options = (context.options?.[0] ?? {}) as {
-      indent?: number;
-    };
-    const indentSize = options.indent ?? 2;
+    const rawOptions: unknown = context.options[0];
+    const rawIndent = (
+      typeof rawOptions === 'object' && rawOptions !== null && 'indent' in rawOptions
+    ) ?
+      rawOptions.indent :
+      undefined;
+    const indentSize = typeof rawIndent === 'number' ? rawIndent : 2;
 
     function check(node: Rule.Node): void {
       if (!node.loc || node.loc.start.line === node.loc.end.line) {
         return;
       }
 
-      const boundaries = getBoundaryTokens(sourceCode, node as TRuleNode, {
+      const boundaries = getBoundaryTokens(sourceCode, node, {
         left: '[',
         right: ']',
       });
@@ -76,7 +77,7 @@ export const multilineArrayBracketsRule: Rule.RuleModule = {
           fixer => {
             const { baseIndent, innerIndent } = getNodeIndentation(
               sourceCode,
-              node as TRuleNode,
+              node,
               indentSize,
             );
 
