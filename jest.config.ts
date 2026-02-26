@@ -1,9 +1,9 @@
 import { readFileSync } from 'node:fs';
 import { join as joinPath } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import process from 'node:process';
 import { type Config } from 'jest';
 
-const dirname = fileURLToPath(new URL('.', import.meta.url));
+const dirname = process.cwd();
 
 type TSwcJestConfig = Record<string, unknown> & {
   swcrc?: boolean;
