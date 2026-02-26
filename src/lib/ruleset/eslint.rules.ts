@@ -3,6 +3,7 @@ import { Xo } from 'xo';
 import stylistic from '@stylistic/eslint-plugin';
 import { monostyleEslintPlugin } from '../plugin/index.ts';
 import { rewriteXoStylisticRules } from '../utils/index.ts';
+import { stylisticRules } from './stylistic.rules.ts';
 import xoConfigDefault from './xo.config.ts';
 
 const xoEslintConfigs = Xo.xoToEslintConfig(xoConfigDefault).map((configItem: Linter.Config) => {
@@ -27,8 +28,25 @@ const xoEslintConfigs = Xo.xoToEslintConfig(xoConfigDefault).map((configItem: Li
   return configItem;
 });
 
-export const styleRules: Linter.Config[] = [
+const allFiles = [
+  '**/*.ts',
+  '**/*.cts',
+  '**/*.mts',
+  '**/*.cjs',
+  '**/*.mjs',
+];
+
+const offRules: Linter.Config = {
+  files: allFiles,
+  rules: {
+    'no-warning-comments': 'off',
+    'sonarjs/todo-tag': 'off',
+  },
+};
+
+export const lintingRules: Linter.Config[] = [
   ...xoEslintConfigs,
+  offRules,
   {
     files: ['**/*.ts'],
     rules: {
@@ -47,13 +65,7 @@ export const styleRules: Linter.Config[] = [
   },
 
   {
-    files: [
-      '**/*.ts',
-      '**/*.cts',
-      '**/*.mts',
-      '**/*.cjs',
-      '**/*.mjs',
-    ],
+    files: allFiles,
     plugins: {
       monostyle: monostyleEslintPlugin,
       '@stylistic': stylistic,
@@ -79,66 +91,14 @@ export const styleRules: Linter.Config[] = [
           indent: 2,
         },
       ],
-      '@stylistic/quotes': ['error', 'single'],
-      '@stylistic/no-multiple-empty-lines': [
+      'monostyle/todo-task-reference': [
         'error',
         {
-          max: 1,
-          maxEOF: 1,
-          maxBOF: 0,
+          regexp:
+            String.raw`[a-z][a-z0-9+.-]*://[^\s]*(?:[A-Z][A-Z0-9]+-\d+|issues/\d+)[^\s]*`,
         },
       ],
-      '@stylistic/padded-blocks': ['error', 'never'],
-      '@stylistic/semi-style': ['error', 'last'],
-      '@stylistic/semi': ['error', 'always'],
-      '@stylistic/max-statements-per-line': ['error', { max: 1 }],
-      '@stylistic/eol-last': ['error', 'always'],
-      '@stylistic/linebreak-style': ['error', 'unix'],
-      '@stylistic/array-bracket-newline': ['error', 'consistent'],
-      '@stylistic/array-element-newline': [
-        'error',
-        {
-          consistent: true,
-          minItems: 4,
-        },
-      ],
-      '@stylistic/new-parens': ['error', 'always'],
-      '@stylistic/object-curly-newline': [
-        'error',
-        {
-          ObjectExpression: { consistent: true, minProperties: 4 },
-          ObjectPattern: { consistent: true, minProperties: 4 },
-          ImportDeclaration: { consistent: true, minProperties: 4 },
-          ExportDeclaration: { consistent: true, minProperties: 4 },
-          TSTypeLiteral: 'always',
-        },
-      ],
-      '@stylistic/object-property-newline': [
-        'error',
-        { allowAllPropertiesOnSameLine: true },
-      ],
-      '@stylistic/one-var-declaration-per-line': ['error', 'always'],
-      '@stylistic/operator-linebreak': ['error', 'after'],
-      '@stylistic/no-confusing-arrow': ['error'],
-      '@stylistic/newline-per-chained-call': [
-        'error',
-        { ignoreChainWithDepth: 3 },
-      ],
-      '@stylistic/function-call-argument-newline': ['error', 'consistent'],
-      '@stylistic/function-paren-newline': ['error', 'consistent'],
-      '@stylistic/object-curly-spacing': ['error', 'always', { emptyObjects: 'never' }],
-      '@stylistic/block-spacing': ['error', 'always'],
-      '@stylistic/max-len': [
-        'error',
-        {
-          code: 100,
-          ignoreUrls: true,
-          ignoreRegExpLiterals: true,
-          ignorePattern: '^import.*$',
-          ignoreComments: true,
-        },
-      ],
-      '@stylistic/indent': ['error', 2, { SwitchCase: 1 }],
+      ...stylisticRules,
       'no-restricted-syntax': [
         'error',
         'ForStatement',
