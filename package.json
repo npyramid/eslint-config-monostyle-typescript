@@ -2,7 +2,15 @@
   "name": "eslint-config-monostyle-typescript",
   "version": "0.1.1",
   "private": false,
-  "description": "Opinionated ESLint flat-config presets and custom formatting rules for TypeScript monorepos.",
+  "description": "Opinionated ESLint flat-config presets and custom formatting rules for TypeScript backend projects and nx monorepos.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/npyramid/eslint-config-monostyle-typescript.git"
+  },
+  "author": {
+    "name": "npyramid",
+    "url": "https://github.com/npyramid"
+  },
   "license": "MIT",
   "type": "module",
   "types": "./dist/index.d.ts",
