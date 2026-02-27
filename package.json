@@ -25,6 +25,7 @@
     "clean": "rm -rf dist",
     "build": "npm run clean && tsc -p tsconfig.build.json",
     "test": "jest --config ./jest.config.ts",
+    "release": "semantic-release",
     "prepublishOnly": "npm run build && npm test"
   },
   "keywords": [
