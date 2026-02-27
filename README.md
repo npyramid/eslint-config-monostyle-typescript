@@ -1,6 +1,6 @@
 # eslint-config-monostyle-typescript
 
-Opinionated ESLint flat-config presets and custom style rules for TypeScript monorepos.
+Opinionated ESLint flat-config presets and custom style rules for TypeScript backend projects and nx monorepos.
 
 ## Features
 
