@@ -59,6 +59,7 @@ export const stylisticRules: Linter.RulesRecord = {
       ignorePattern: '^import.*$',
       ignoreComments: true,
       ignoreStrings: true,
+      ignoreTemplateLiterals: true,
     },
   ],
   '@stylistic/indent': ['error', 2, { SwitchCase: 1 }],
