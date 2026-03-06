@@ -9,9 +9,8 @@ type TSwcJestConfig = Record<string, unknown> & {
   swcrc?: boolean;
 };
 
-const isRecord = (value: unknown): value is Record<string, unknown> => (
-  typeof value === 'object' && value !== null
-);
+const isRecord = (value: unknown): value is Record<string, unknown> =>
+  typeof value === 'object' && value !== null;
 
 const loadSwcJestConfig = (): TSwcJestConfig => {
   const pathToFile = joinPath(dirname, '.spec.swcrc');

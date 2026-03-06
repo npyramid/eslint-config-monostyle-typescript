@@ -7,7 +7,8 @@ Opinionated ESLint flat-config presets and custom style rules for TypeScript bac
 - Including best practices from xo linter and SonarJS plugin
 - Added and isolated `@stylistic` rules via `stylisticRules`
 - Prebuilt `monostylePresetTs` and optional `monostylePresetNxTs`
-- Low-level exports: `lintingRules`, `nxRules`, `stylisticRules`
+- Prebuilt `monostylePresetTsPrettier` and optional `monostylePresetNxTsPrettier`
+- Low-level exports: `lintingRules`, `lintingRulesPrettier`, `nxRules`, `stylisticRules`
 - ESM package with TypeScript declarations
 
 ## Install
@@ -31,6 +32,18 @@ import { monostylePresetTs } from 'eslint-config-monostyle-typescript';
 export default monostylePresetTs;
 ```
 
+## Quick start (Prettier-compatible)
+
+```ts
+// eslint.config.ts
+import { monostylePresetTsPrettier } from 'eslint-config-monostyle-typescript';
+
+export default monostylePresetTsPrettier;
+```
+
+This preset uses XO in `prettier: 'compat'` mode and applies `eslint-config-prettier/flat` at the end,
+so formatting conflicts between ESLint/XO and Prettier are disabled.
+
 ## Nx-oriented setup
 
 ```ts
@@ -40,27 +53,30 @@ import { monostylePresetNxTs } from 'eslint-config-monostyle-typescript';
 export default monostylePresetNxTs;
 ```
 
+## Nx-oriented setup (Prettier-compatible)
+
+```ts
+// eslint.config.ts
+import { monostylePresetNxTsPrettier } from 'eslint-config-monostyle-typescript';
+
+export default monostylePresetNxTsPrettier;
+```
+
 ## Fine-grained setup
 
 ```ts
 // eslint.config.ts
-import {
- lintingRules,
- nxRules,
-} from 'eslint-config-monostyle-typescript';
+import { lintingRules, lintingRulesPrettier, nxRules } from 'eslint-config-monostyle-typescript';
 
-export default [
- ...lintingRules,
- ...nxRules,
-];
+export default [...lintingRulesPrettier, ...nxRules];
 ```
 
 ## Included custom rules
 
 - `monostyle/named-specifiers-newline`
-- `monostyle/multiline-array-brackets`
-- `monostyle/object-pattern-newline`
 - `monostyle/todo-task-reference`
+
+Array/object multiline formatting is now handled by `@stylistic` rules in `stylisticRules`.
 
 ### `monostyle/todo-task-reference`
 
@@ -75,12 +91,14 @@ Configuration accepts one (or several) of:
 
 For all options, protocol is mandatory (`https://...`, `http://...`, etc.).
 
-These rules are already enabled by `lintingRules`, `monostylePresetTs`, and `monostylePresetNxTs`.
+This rule is already enabled by `lintingRules`, `lintingRulesPrettier`, `monostylePresetTs`,
+`monostylePresetTsPrettier`, `monostylePresetNxTs`, and `monostylePresetNxTsPrettier`.
 
 ## Development
 
 ```bash
 npm install
+npm run format:check
 npm test
 npm run build
 ```

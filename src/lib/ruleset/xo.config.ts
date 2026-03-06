@@ -1,9 +1,20 @@
-const xoSetting = [
+import { type XoConfigItem } from 'xo';
+
+const baseXoConfig: XoConfigItem = {
+  space: true,
+  react: false,
+  semicolon: true,
+};
+
+export const xoSettingsPrettier: XoConfigItem[] = [
   {
-    space: true,
-    react: false,
-    semicolon: true,
+    prettier: 'compat',
+    ...baseXoConfig,
   },
 ];
 
-export default xoSetting;
+export const xoSettings: XoConfigItem[] = [
+  {
+    ...baseXoConfig,
+  },
+];
