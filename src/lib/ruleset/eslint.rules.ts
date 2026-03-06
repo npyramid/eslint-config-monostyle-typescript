@@ -35,7 +35,7 @@ const toCompatXoConfigs = (xoConfigs: TXoConfigItem[]): Linter.Config[] =>
 const xoEslintRules = toCompatXoConfigs(xoSettings);
 const xoEslintRulesPrettier = toCompatXoConfigs(xoSettingsPrettier);
 
-const allFiles = ['**/*.ts', '**/*.cts', '**/*.mts', '**/*.cjs', '**/*.mjs'];
+const allFiles = ['**/*.ts', '**/*.cts', '**/*.mts'];
 
 const offRules: Linter.Config = {
   files: allFiles,
