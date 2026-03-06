@@ -1,1 +1,1 @@
-export { monostylePresetTsPrettier as default } from "./src/index.js";
+export { monostylePresetTsPrettier as default } from './src/index.js';

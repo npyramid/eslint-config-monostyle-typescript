@@ -1,4 +1,4 @@
-import { type XoConfigItem } from "xo";
+import { type XoConfigItem } from 'xo';
 
 const baseXoConfig: XoConfigItem = {
   space: true,
@@ -8,7 +8,7 @@ const baseXoConfig: XoConfigItem = {
 
 export const xoSettingsPrettier: XoConfigItem[] = [
   {
-    prettier: "compat",
+    prettier: 'compat',
     ...baseXoConfig,
   },
 ];
