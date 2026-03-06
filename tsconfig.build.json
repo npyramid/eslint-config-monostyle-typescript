@@ -7,11 +7,13 @@
     "declarationMap": false,
     "sourceMap": false,
     "outDir": "./dist",
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "allowJs": false
   },
   "exclude": [
     "src/**/*.spec.ts",
-    "./*.ts"
+    "./*.ts",
+    "./release.config.mjs"
   ],
   "include": [
     "src/**/*.ts"

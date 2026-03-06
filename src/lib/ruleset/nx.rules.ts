@@ -2,21 +2,10 @@ import { type Linter } from 'eslint';
 
 export const nxRules: Linter.Config[] = [
   {
-    ignores: [
-      '**/dist',
-      '**/.nx/**',
-      '**/out-tsc/**',
-      '**/tmp/**',
-      '**/jest.config.*',
-    ],
+    ignores: ['**/dist', '**/.nx/**', '**/out-tsc/**', '**/tmp/**', '**/jest.config.*'],
   },
   {
-    files: [
-      '**/*.ts',
-      '**/*.tsx',
-      '**/*.js',
-      '**/*.jsx',
-    ],
+    files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
     rules: {
       '@nx/enforce-module-boundaries': [
         'error',
@@ -31,9 +20,7 @@ export const nxRules: Linter.Config[] = [
           depConstraints: [
             {
               sourceTag: '*',
-              onlyDependOnLibsWithTags: [
-                '*',
-              ],
+              onlyDependOnLibsWithTags: ['*'],
             },
           ],
         },
@@ -41,14 +28,7 @@ export const nxRules: Linter.Config[] = [
       'import-x/order': [
         'error',
         {
-          groups: [
-            'builtin',
-            'external',
-            'internal',
-            'parent',
-            'sibling',
-            'index',
-          ],
+          groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
           pathGroups: [
             {
               pattern: '#src/**',
@@ -61,9 +41,7 @@ export const nxRules: Linter.Config[] = [
               position: 'before',
             },
           ],
-          pathGroupsExcludedImportTypes: [
-            'builtin',
-          ],
+          pathGroupsExcludedImportTypes: ['builtin'],
           'newlines-between': 'always',
           alphabetize: { order: 'asc' },
           warnOnUnassignedImports: true,
@@ -72,10 +50,7 @@ export const nxRules: Linter.Config[] = [
           named: false,
         },
       ],
-      'import-x/no-extraneous-dependencies': [
-        'error',
-        { packageDir: ['.'] },
-      ],
+      'import-x/no-extraneous-dependencies': ['error', { packageDir: ['.'] }],
       'n/no-extraneous-import': 'off',
       'n/no-extraneous-require': 'off',
     },
@@ -101,9 +76,7 @@ export const nxRules: Linter.Config[] = [
           depConstraints: [
             {
               sourceTag: '*',
-              onlyDependOnLibsWithTags: [
-                '*',
-              ],
+              onlyDependOnLibsWithTags: ['*'],
             },
           ],
         },

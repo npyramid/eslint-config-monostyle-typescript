@@ -6,15 +6,7 @@ type TRuleOptions = {
   regexp?: string;
 };
 
-const TRACKED_KEYWORDS = [
-  'TODO',
-  'FIXME',
-  'WARNING',
-  'WARN',
-  'BUG',
-  'HACK',
-  'XXX',
-];
+const TRACKED_KEYWORDS = ['TODO', 'FIXME', 'WARNING', 'WARN', 'BUG', 'HACK', 'XXX'];
 const PROTOCOL_URL_REGEXP = /\b[a-z][a-z\d+.-]*:\/\/\S+/gi;
 
 function escapeRegExp(value: string): string {
@@ -50,15 +42,18 @@ function hasTaskReferenceInProtocolUrl(comment: string, matchers: RegExp[]): boo
     return false;
   }
 
-  return urls.some(url => matchers.some(matcher => {
-    matcher.lastIndex = 0;
-    return matcher.test(url);
-  }));
+  return urls.some((url) =>
+    matchers.some((matcher) => {
+      matcher.lastIndex = 0;
+      return matcher.test(url);
+    }),
+  );
 }
 
 function getKeyword(comment: string): string | undefined {
-  const matchedKeyword = TRACKED_KEYWORDS.find(keyword =>
-    new RegExp(String.raw`\b${keyword}\b`, 'i').test(comment));
+  const matchedKeyword = TRACKED_KEYWORDS.find((keyword) =>
+    new RegExp(String.raw`\b${keyword}\b`, 'i').test(comment),
+  );
 
   return matchedKeyword;
 }
@@ -92,9 +87,7 @@ export const todoTaskReferenceRule: Rule.RuleModule = {
   create(context) {
     const rawOptions: unknown = context.options[0];
     const options =
-      typeof rawOptions === 'object' && rawOptions !== null ?
-        rawOptions as TRuleOptions :
-        {};
+      typeof rawOptions === 'object' && rawOptions !== null ? (rawOptions as TRuleOptions) : {};
     const matchers = toTaskMatchers(options);
 
     if (matchers.length === 0) {

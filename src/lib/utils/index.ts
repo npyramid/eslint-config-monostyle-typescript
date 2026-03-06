@@ -1,9 +1,5 @@
 import { type Rule, type Linter } from 'eslint';
-import {
-  type TSourceCode,
-  type TLocatable,
-  type TToken,
-} from '../types/index.type.ts';
+import { type TSourceCode, type TLocatable, type TToken } from '../types/index.type.ts';
 
 type TTokenWithLocAndRange = TToken & {
   loc: {
@@ -17,11 +13,8 @@ type TTokenWithLocAndRange = TToken & {
   range: [number, number];
 };
 
-const hasTokenLocAndRange = (token: TToken): token is TTokenWithLocAndRange => (
-  Boolean(token.loc) &&
-  Array.isArray(token.range) &&
-  token.range.length === 2
-);
+const hasTokenLocAndRange = (token: TToken): token is TTokenWithLocAndRange =>
+  Boolean(token.loc) && Array.isArray(token.range) && token.range.length === 2;
 
 export function getNodeIndentation(
   sourceCode: TSourceCode,
@@ -42,7 +35,7 @@ export function getNodeIndentation(
 }
 
 export function hasAdjacentMembersOnSameLine(items: TLocatable[]): boolean {
-  if (!items.every(item => Boolean(item.loc))) {
+  if (!items.every((item) => Boolean(item.loc))) {
     return false;
   }
 
@@ -61,17 +54,19 @@ export function getBoundaryTokens(
     left: string;
     right: string;
   },
-): {
-  leftToken: TTokenWithLocAndRange;
-  rightToken: TTokenWithLocAndRange;
-} | undefined {
+):
+  | {
+      leftToken: TTokenWithLocAndRange;
+      rightToken: TTokenWithLocAndRange;
+    }
+  | undefined {
   const tokens = sourceCode.getTokens(node, { includeComments: false });
   const leftToken = tokens.find(
-    token => token.value === boundaries.left && hasTokenLocAndRange(token),
+    (token) => token.value === boundaries.left && hasTokenLocAndRange(token),
   );
   const rightToken = [...tokens]
     .toReversed()
-    .find(token => token.value === boundaries.right && hasTokenLocAndRange(token));
+    .find((token) => token.value === boundaries.right && hasTokenLocAndRange(token));
 
   if (!leftToken || !rightToken) {
     return undefined;
@@ -84,14 +79,15 @@ export function getBoundaryNewlineNeeds(
   sourceCode: TSourceCode,
   leftToken: TTokenWithLocAndRange,
   rightToken: TTokenWithLocAndRange,
-): {
-  needsAfter: boolean;
-  needsBefore: boolean;
-} | undefined {
-  const nextToken = sourceCode.getTokenAfter(
-    leftToken,
-    { includeComments: false },
-  );
+):
+  | {
+      needsAfter: boolean;
+      needsBefore: boolean;
+    }
+  | undefined {
+  const nextToken = sourceCode.getTokenAfter(leftToken, {
+    includeComments: false,
+  });
   const previousToken = sourceCode.getTokenBefore(rightToken, {
     includeComments: false,
   });
@@ -113,7 +109,7 @@ export function hasCommentsInsideRange(
 ): boolean {
   return sourceCode
     .getTokensBetween(leftToken, rightToken, { includeComments: true })
-    .some(token => token.type === 'Line' || token.type === 'Block');
+    .some((token) => token.type === 'Line' || token.type === 'Block');
 }
 
 export const getLeadingWhitespace = (text: string): string => {
@@ -128,10 +124,7 @@ export function rewriteXoStylisticRules(rules: Linter.Config['rules']): Linter.C
 
   // @stylistic v5 renamed some rule ids. xo still using stylistic v2
   if (rules['@stylistic/func-call-spacing'] && !rules['@stylistic/function-call-spacing']) {
-    const {
-      '@stylistic/func-call-spacing': funcCallSpacing,
-      ...rest
-    } = rules;
+    const { '@stylistic/func-call-spacing': funcCallSpacing, ...rest } = rules;
 
     return {
       ...rest,
@@ -141,4 +134,3 @@ export function rewriteXoStylisticRules(rules: Linter.Config['rules']): Linter.C
 
   return rules;
 }
-

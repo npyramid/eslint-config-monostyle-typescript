@@ -1,7 +1,14 @@
 import { type Linter } from 'eslint';
 
+const offRules: Linter.RulesRecord = {
+  '@stylistic/arrow-parens': 'off',
+  '@stylistic/quotes': 'off',
+  '@stylistic/operator-linebreak': 'off',
+  '@stylistic/indent': 'off',
+};
+
 export const stylisticRules: Linter.RulesRecord = {
-  '@stylistic/quotes': ['error', 'single'],
+  ...offRules,
   '@stylistic/no-multiple-empty-lines': [
     'error',
     {
@@ -35,17 +42,12 @@ export const stylisticRules: Linter.RulesRecord = {
       TSTypeLiteral: 'always',
     },
   ],
-  '@stylistic/object-property-newline': [
-    'error',
-    { allowAllPropertiesOnSameLine: true },
-  ],
+
+  '@stylistic/object-property-newline': ['error', { allowAllPropertiesOnSameLine: true }],
   '@stylistic/one-var-declaration-per-line': ['error', 'always'],
   '@stylistic/operator-linebreak': ['error', 'after'],
   '@stylistic/no-confusing-arrow': ['error'],
-  '@stylistic/newline-per-chained-call': [
-    'error',
-    { ignoreChainWithDepth: 3 },
-  ],
+  '@stylistic/newline-per-chained-call': ['error', { ignoreChainWithDepth: 3 }],
   '@stylistic/function-call-argument-newline': ['error', 'consistent'],
   '@stylistic/function-paren-newline': ['error', 'consistent'],
   '@stylistic/object-curly-spacing': ['error', 'always', { emptyObjects: 'never' }],
@@ -61,5 +63,4 @@ export const stylisticRules: Linter.RulesRecord = {
       ignoreStrings: true,
     },
   ],
-  '@stylistic/indent': ['error', 2, { SwitchCase: 1 }],
 };

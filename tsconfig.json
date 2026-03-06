@@ -4,6 +4,7 @@
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "strict": true,
+    "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
@@ -20,6 +21,7 @@
     "rewriteRelativeImportExtensions": true
   },
   "include": [
-    "**/*.ts"
+    "**/*.ts",
+    "./release.config.mjs"
   ]
 }

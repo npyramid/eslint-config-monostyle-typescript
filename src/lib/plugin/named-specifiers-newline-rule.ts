@@ -36,31 +36,23 @@ export const namedSpecifiersNewlineRule: Rule.RuleModule = {
     }
 
     const rawOptions: unknown = context.options[0];
-    const rawMinSpecifiers = (
+    const rawMinSpecifiers =
       typeof rawOptions === 'object' && rawOptions !== null && 'minSpecifiers' in rawOptions
-    ) ?
-      rawOptions.minSpecifiers :
-      undefined;
-    const rawIndent = (
+        ? rawOptions.minSpecifiers
+        : undefined;
+    const rawIndent =
       typeof rawOptions === 'object' && rawOptions !== null && 'indent' in rawOptions
-    ) ?
-      rawOptions.indent :
-      undefined;
+        ? rawOptions.indent
+        : undefined;
     const minSpecifiers = typeof rawMinSpecifiers === 'number' ? rawMinSpecifiers : 4;
     const indentSize = typeof rawIndent === 'number' ? rawIndent : 2;
 
-    function check(
-      node: Rule.Node,
-      specifierType: string,
-      kind: 'import' | 'export',
-    ): void {
+    function check(node: Rule.Node, specifierType: string, kind: 'import' | 'export'): void {
       if (!('specifiers' in node) || !Array.isArray(node.specifiers)) {
         return;
       }
 
-      const specifiers = node.specifiers.filter(
-        specifier => specifier?.type === specifierType,
-      );
+      const specifiers = node.specifiers.filter((specifier) => specifier?.type === specifierType);
 
       if (specifiers.length < minSpecifiers) {
         return;
@@ -96,23 +88,19 @@ export const namedSpecifiersNewlineRule: Rule.RuleModule = {
         node,
         messageId: 'multiline',
         data: { kind, min: String(minSpecifiers) },
-        fix: hasCommentsInside ?
-          null :
-          fixer => {
-            const { baseIndent, innerIndent } = getNodeIndentation(
-              sourceCode,
-              node,
-              indentSize,
-            );
+        fix: hasCommentsInside
+          ? null
+          : (fixer) => {
+              const { baseIndent, innerIndent } = getNodeIndentation(sourceCode, node, indentSize);
 
-            const specText = specifiers
-              .map(specifier => sourceCode.getText(specifier))
-              .join(`,\n${innerIndent}`);
+              const specText = specifiers
+                .map((specifier) => sourceCode.getText(specifier))
+                .join(`,\n${innerIndent}`);
 
-            const replacement = `\n${innerIndent}${specText}\n${baseIndent}`;
+              const replacement = `\n${innerIndent}${specText}\n${baseIndent}`;
 
-            return fixer.replaceTextRange([leftCurly.range[1], rightCurly.range[0]], replacement);
-          },
+              return fixer.replaceTextRange([leftCurly.range[1], rightCurly.range[0]], replacement);
+            },
       });
     }
 
