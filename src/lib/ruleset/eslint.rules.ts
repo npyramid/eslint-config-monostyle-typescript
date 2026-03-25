@@ -42,6 +42,7 @@ const offRules: Linter.Config = {
   rules: {
     'no-warning-comments': 'off',
     'sonarjs/todo-tag': 'off',
+    '@typescript-eslint/no-floating-promises': 'off',
   },
 };
 
